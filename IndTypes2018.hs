@@ -155,11 +155,27 @@ instance Show a => Show (List a) where
   show (Cons x Nil) = "Cons " ++ show x ++ " Nil"
   show (Cons x y) = "Cons " ++ show x ++ " ("  ++ show y ++ ")"
 
+
 instance Eq a => Eq (List a) where
-  Nil == Nil = True
+  {-Nil == Nil = True
+  (Cons x xs) == (Cons y ys) = (x == y) && (xs == ys)
+  _ == _ = False
+  -}
+  Nil == x = case x of
+                Nil -> True
+                _ -> False
 
+  (Cons x xs) == y = case y of
+                      Nil -> False
+                      (Cons y ys) -> (x == y) && (xs == ys)
 
+  Nil /= Nil = False
+  (Cons x xs) /= (Cons y ys) = (x /= y) || (xs /= ys)
 
+instance Ord a => Ord (List a) where
+  Nil > Nil = False
+  (Cons x xs) > (Cons y ys) = (x > y) && (xs > ys)
+  (Cons x xs) < (Cons y ys) = (x < y) && (xs < ys)
 
 {-
   Exercícios: Definir as funções usuais de lista sobre List:
